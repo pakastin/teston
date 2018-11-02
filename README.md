@@ -1,5 +1,5 @@
 # test
-Similar to tape, but with mjs support (w.i.p)
+Similar to tape, but with mjs support (w.i.p). Currently not TAP-compliant.
 
 ## Installation
 ```
