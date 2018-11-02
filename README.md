@@ -1,14 +1,14 @@
-# test
+# Testicle
 Similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation (w.i.p). Currently not TAP-compliant.
 
 ## Installation
 ```
-npm i @pakastin/test
+npm i testicle
 ```
 
 ## Usage
 ```
-import t from '@pakastin/test';
+import t from 'testicle';
 
 t('Testing things', (t) => {
   t('Test A', (t) => {
