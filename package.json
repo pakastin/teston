@@ -1,0 +1,17 @@
+{
+  "name": "@pakastin/test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "src/index.mjs",
+  "scripts": {
+    "build": "rollup src/index.mjs -n test -f cjs -o dist/index.js",
+    "test": "node --experimental-modules src/index.test.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "~0.66.6"
+  },
+  "dependencies": {}
+}
