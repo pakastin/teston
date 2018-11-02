@@ -41,17 +41,24 @@ node --experimental-modules test.mjs
 
 ## API
 ### t(description, test)
+Create a test
 
 ### t.plan(count)
+Define how many tests there will be.
 
 ### t.pass(message)
+Pass the test
 
 ### t.fail(message)
+Fail the test
 
 ### t.equal(a, b, message)
 ### t.equals(a, b, message)
+Test if a and b are equal
 
 ### t.deepEqual(a, b, message)
 ### t.deepEquals(a, b, message)
+Test if a and b are deeply equal
 
-### t(t(description, test))
+### t(message, (t) => { t(description, test) })
+Setup subtest
