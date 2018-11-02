@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/pakastin/testicle.svg?branch=master)](https://travis-ci.org/pakastin/testicle)
+[![Build Status](https://img.shields.io/travis/pakastin/testicle/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/pakastin/testicle?branch=master)
+[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Flet/semistandard)
 [![npm](https://img.shields.io/npm/v/testicle.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/testicle)
 
 # Testicle
