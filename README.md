@@ -1,5 +1,5 @@
 # Testicle
-Similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation (w.i.p). Currently not TAP-compliant.
+Similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation. Currently not TAP-compliant.
 
 🍒
 
@@ -9,7 +9,7 @@ npm i testicle
 ```
 
 ## Usage
-```
+```js
 import t from 'testicle';
 
 t('Testing things', (t) => {
