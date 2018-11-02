@@ -67,3 +67,6 @@ Test if a and b are deeply equal
 
 ### t(message, (t) => { t(description, test) })
 Setup subtest
+
+### License
+[MIT](https://github.com/pakastin/testicle/blob/master/LICENSE)
