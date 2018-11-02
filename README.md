@@ -9,7 +9,7 @@ npm i testicle
 ```
 
 ## Usage
-```
+```js
 import t from 'testicle';
 
 t('Testing things', (t) => {
