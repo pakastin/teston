@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/pakastin/testicle.svg?branch=master)](https://travis-ci.org/pakastin/testicle)
+[![npm](https://img.shields.io/npm/v/testicle.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/testicle)
 
 # Testicle
 Similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation. Currently not TAP-compliant.
