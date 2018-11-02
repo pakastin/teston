@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pakastin/testicle.svg?branch=master)](https://travis-ci.org/pakastin/testicle)
+
 # Testicle
 Similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation. Currently not TAP-compliant.
 
