@@ -7,6 +7,8 @@ Test runner similar to tape, but with ES6 module support, simpler subtest syntax
 
 🍒
 
+(please suggest [better name](https://github.com/pakastin/testicle/issues/3))
+
 ## Installation
 ```
 npm i testicle
