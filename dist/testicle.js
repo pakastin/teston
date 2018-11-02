@@ -1,15 +1,16 @@
 'use strict';
 
-const NOT_PLANNED = 'Not planned';
-const TOO_MANY_RESULTS = 'Too many results';
+var NOT_PLANNED = 'Not planned';
+var TOO_MANY_RESULTS = 'Too many results';
 
-var checkReady = (t, cb) => () => {
-  const { results, planned } = t;
+function checkReady (t, cb) { return function () {
+  var results = t.results;
+  var planned = t.planned;
 
-  const total = results.length;
+  var total = results.length;
 
   if (total === planned) {
-    const passed = results.filter(result => result).length;
+    var passed = results.filter(function (result) { return result; }).length;
 
     if (t.ready) {
       return;
@@ -28,27 +29,28 @@ var checkReady = (t, cb) => () => {
       throw new Error(TOO_MANY_RESULTS);
     }
   }
-};
+}; }
 
-var padding = (count) => {
-  let result = '';
+function padding (count) {
+  var result = '';
 
-  for (let i = 0; i < count; i++) {
+  for (var i = 0; i < count; i++) {
     result += ' ';
   }
 
   return result;
-};
+}
 
-var plan = (t) => {
-  return (planned) => {
+function plan (t) {
+  return function (planned) {
     t.planned = planned;
   };
-};
+}
 
-var equal = (t, next) => (a, b, description) => {
-  const { pass, fail } = t;
-  const result = a === b;
+function equal (t, next) { return function (a, b, description) {
+  var pass = t.pass;
+  var fail = t.fail;
+  var result = a === b;
 
   if (result) {
     pass(description || 'equal');
@@ -57,9 +59,9 @@ var equal = (t, next) => (a, b, description) => {
     fail(description || 'equal');
     next(false, a, b);
   }
-};
+}; }
 
-const deepEqual = (a, b) => {
+var deepEqual = function (a, b) {
   if (a === b) {
     return true;
   }
@@ -79,7 +81,7 @@ const deepEqual = (a, b) => {
     return a === b;
   }
 
-  for (const key in a) {
+  for (var key in a) {
     if (!(key in b)) {
       return false;
     }
@@ -87,11 +89,11 @@ const deepEqual = (a, b) => {
       return false;
     }
   }
-  for (const key in b) {
-    if (!(key in a)) {
+  for (var key$1 in b) {
+    if (!(key$1 in a)) {
       return false;
     }
-    if (!deepEqual(a[key], b[key])) {
+    if (!deepEqual(a[key$1], b[key$1])) {
       return false;
     }
   }
@@ -99,7 +101,7 @@ const deepEqual = (a, b) => {
   return true;
 };
 
-var deepEqual$1 = (t, next) => (a, b, msg) => {
+function deepEqual$1 (t, next) { return function (a, b, msg) {
   if (deepEqual(a, b)) {
     t.pass(msg || 'deep equal');
     next(true);
@@ -107,41 +109,41 @@ var deepEqual$1 = (t, next) => (a, b, msg) => {
     t.fail(msg || 'deep equal');
     next(false, a, b);
   }
-};
+}; }
 
-var pass = (t, next) => (description) => {
+function pass (t, next) { return function (description) {
   t.results.push(true);
 
   next(description);
-};
+}; }
 
-var fail = (t, next) => (description) => {
+function fail (t, next) { return function (description) {
   t.results.push(false);
 
   next(description);
-};
+}; }
 
-const GREEN = '\x1b[32m';
-const RESET = '\x1b[0m';
-const RED = '\x1b[31m';
-const GREY = '\x1b[90m';
+var GREEN = '\x1b[32m';
+var RESET = '\x1b[0m';
+var RED = '\x1b[31m';
+var GREY = '\x1b[90m';
 
-const green = (str) => {
+var green = function (str) {
   return GREEN + str + RESET;
 };
-const red = (str) => {
+var red = function (str) {
   return RED + str + RESET;
 };
-const grey = (str) => {
+var grey = function (str) {
   return GREY + str + RESET;
 };
 
-let depth = 1;
+var depth = 1;
 
-const q = [];
-let qReady = true;
+var q = [];
+var qReady = true;
 
-const serve = () => {
+var serve = function () {
   if (qReady) {
     if (!q.length) {
       console.log('');
@@ -152,28 +154,29 @@ const serve = () => {
       }
       return;
     }
-    const { test } = q.shift();
+    var ref = q.shift();
+    var test = ref.test;
 
     qReady = false;
     test();
   }
 };
 
-let passed = true;
+var passed = true;
 
-const t = (description, test) => {
-  const d = depth;
-  const queued = {
-    test: () => {
-      let timeout;
+var t = function (description, test) {
+  var d = depth;
+  var queued = {
+    test: function () {
+      var timeout;
       t.timeout = 5000;
       t.description = description;
       t.indent = padding(queued.depth);
 
-      t.white = (str) => console.log(t.indent + str);
-      t.grey = (str) => console.log(t.indent + grey(str));
-      t.green = (str) => console.log(t.indent + green(str));
-      t.red = (str) => console.error(t.indent + red(str));
+      t.white = function (str) { return console.log(t.indent + str); };
+      t.grey = function (str) { return console.log(t.indent + grey(str)); };
+      t.green = function (str) { return console.log(t.indent + green(str)); };
+      t.red = function (str) { return console.error(t.indent + red(str)); };
 
       console.log('');
       t.white(description);
@@ -183,13 +186,13 @@ const t = (description, test) => {
       t.results = [];
       t.planned = 0;
       t.plan = plan(t);
-      t.checkReady = checkReady(t, (result, passed, failed, total) => {
-        process.nextTick(() => {
+      t.checkReady = checkReady(t, function (result, passed, failed, total) {
+        process.nextTick(function () {
           if (total) {
             if (result) {
-              t.green(`» Passed ${passed}/${total}`);
+              t.green(("» Passed " + passed + "/" + total));
             } else {
-              t.red(`» Failed ${failed}/${total}`);
+              t.red(("» Failed " + failed + "/" + total));
             }
           }
           if (timeout) {
@@ -200,28 +203,28 @@ const t = (description, test) => {
           depth--;
         });
       });
-      t.pass = pass(t, (description) => {
-        t.green(`✔︎ ${description || 'pass'}`);
+      t.pass = pass(t, function (description) {
+        t.green(("✔︎ " + (description || 'pass')));
         t.checkReady();
       });
-      t.fail = fail(t, (description) => {
-        t.red(`✗ ${description || 'fail'}`);
+      t.fail = fail(t, function (description) {
+        t.red(("✗ " + (description || 'fail')));
         t.checkReady();
         passed = false;
       });
-      t.equal = t.equals = equal(t, (equals, a, b) => {
+      t.equal = t.equals = equal(t, function (equals, a, b) {
       });
-      t.deepEqual = t.deepEquals = deepEqual$1(t, (equals, a, b) => {
+      t.deepEqual = t.deepEquals = deepEqual$1(t, function (equals, a, b) {
       });
       depth++;
       test(t);
 
       if (t.planned && !t.ready) {
-        timeout = setTimeout(() => {
+        timeout = setTimeout(function () {
           timeout = null;
 
           if (!t.ready) {
-            t.red(`» timeout`);
+            t.red("» timeout");
           }
         }, t.timeout);
       }
@@ -231,7 +234,7 @@ const t = (description, test) => {
     depth: d
   };
 
-  for (let i = 0; i <= q.length; i++) {
+  for (var i = 0; i <= q.length; i++) {
     if (i === q.length || depth > q[i].depth) {
       q.splice(i, 0, queued);
       break;
