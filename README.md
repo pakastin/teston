@@ -1,5 +1,5 @@
 # test
-Similar to tape, but with mjs support (w.i.p). Currently not TAP-compliant.
+Similar to tape, but with ES6 module support and nice indentation (w.i.p). Currently not TAP-compliant.
 
 ## Installation
 ```
