@@ -1,5 +1,5 @@
 {
-  "name": "@pakastin/test",
+  "name": "testicle",
   "version": "0.0.1",
   "description": "Similar to tape, but with mjs support (w.i.p)",
   "main": "dist/index.js",
