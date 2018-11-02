@@ -1,6 +1,8 @@
 # Testicle
 Similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation (w.i.p). Currently not TAP-compliant.
 
+🍒
+
 ## Installation
 ```
 npm i testicle
