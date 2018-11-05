@@ -5,7 +5,7 @@
   "main": "dist/teston.js",
   "module": "src/index.mjs",
   "scripts": {
-    "build": "rollup -c -n test -f cjs src/index.mjs -o dist/teston.js",
+    "build": "rollup -c",
     "test": "node --experimental-modules test/index.test.mjs"
   },
   "author": "Juha Lindstedt",
