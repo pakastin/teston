@@ -1,4 +1,4 @@
-import pass from './pass.mjs';
+import pass from '../src/pass.mjs';
 
 export default (t) => {
   t('Pass', (t) => {

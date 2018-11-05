@@ -1,4 +1,4 @@
-import equal from './equal.mjs';
+import equal from '../src/equal.mjs';
 
 export default (t) => {
   t('Equal', (t) => {

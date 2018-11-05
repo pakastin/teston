@@ -1,4 +1,4 @@
-import t from './index.mjs';
+import t from '../src/index.mjs';
 
 import plan from './plan.test.mjs';
 import pass from './pass.test.mjs';

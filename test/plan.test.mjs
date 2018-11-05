@@ -1,4 +1,4 @@
-import plan from './plan.mjs';
+import plan from '../src/plan.mjs';
 
 export default (t) => {
   t('Plan', (t) => {

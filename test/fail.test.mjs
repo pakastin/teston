@@ -1,4 +1,4 @@
-import fail from './fail.mjs';
+import fail from '../src/fail.mjs';
 
 export default (t) => {
   t('Fail', (t) => {

@@ -1,4 +1,4 @@
-import { red, green, grey, RED, GREEN, GREY, RESET } from './colors.mjs';
+import { red, green, grey, RED, GREEN, GREY, RESET } from '../src/colors.mjs';
 
 export default (t) => {
   t('Print green color', (t) => {

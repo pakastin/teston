@@ -1,4 +1,4 @@
-import checkReady, { NOT_PLANNED, TOO_MANY_RESULTS } from './checkready.mjs';
+import checkReady, { NOT_PLANNED, TOO_MANY_RESULTS } from '../src/checkready.mjs';
 
 export default (t) => {
   t('Do nothing if less done than planned', (t) => {

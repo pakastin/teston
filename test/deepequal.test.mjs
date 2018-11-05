@@ -1,4 +1,4 @@
-import deepEqual from './deepequal.mjs';
+import deepEqual from '../src/deepequal.mjs';
 
 export default (t) => {
   t('Should pass similar objects', (t) => {
