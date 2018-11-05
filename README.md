@@ -1,6 +1,8 @@
 # Teston
 
-Test runner similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation. 🚀
+Test runner similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation.
+
+Not to mention it's blazing fast as well (because why not)! 🚀
 
 [![Build Status](https://img.shields.io/travis/pakastin/teston/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/pakastin/teston?branch=master)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Flet/semistandard)
