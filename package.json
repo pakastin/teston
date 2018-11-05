@@ -1,15 +1,15 @@
 {
-  "name": "testicle",
+  "name": "teston",
   "version": "0.1.2",
   "description": "Similar to tape, but with mjs support (w.i.p)",
-  "main": "dist/testicle.js",
+  "main": "dist/teston.js",
   "module": "src/index.mjs",
   "scripts": {
-    "build": "rollup -c -n test -f cjs src/index.mjs -o dist/testicle.js",
+    "build": "rollup -c -n test -f cjs src/index.mjs -o dist/teston.js",
     "test": "node --experimental-modules src/index.test.mjs"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Juha Lindstedt",
+  "license": "MIT",
   "devDependencies": {
     "rollup": "~0.66.6",
     "rollup-plugin-buble": "~0.19.4"
