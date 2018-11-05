@@ -1,22 +1,20 @@
-[![Build Status](https://img.shields.io/travis/pakastin/testicle/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/pakastin/testicle?branch=master)
+[![Build Status](https://img.shields.io/travis/pakastin/teston/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/pakastin/teston?branch=master)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Flet/semistandard)
-[![npm](https://img.shields.io/npm/v/testicle.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/testicle)
+[![npm](https://img.shields.io/npm/v/teston.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/teston)
 
-# Testicle
+# Teston
 Test runner similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation. Currently not TAP-compliant.
 
-🍒
-
-(please suggest a [better name](https://github.com/pakastin/testicle/issues/3))
+🚀
 
 ## Installation
 ```
-npm i testicle
+npm i teston
 ```
 
 ## Usage
 ```js
-import t from 'testicle';
+import t from 'teston';
 
 t('Testing things', (t) => {
   t('Test A', (t) => {
@@ -72,4 +70,4 @@ Test if a and b are deeply equal
 Setup subtest
 
 ## License
-[MIT](https://github.com/pakastin/testicle/blob/master/LICENSE)
+[MIT](https://github.com/pakastin/teston/blob/master/LICENSE)
