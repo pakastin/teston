@@ -3,8 +3,7 @@
 [![npm](https://img.shields.io/npm/v/teston.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/teston)
 
 # Teston
-Test runner similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation. Currently not TAP-compliant.
-
+Test runner similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation.
 🚀
 
 ## Installation
