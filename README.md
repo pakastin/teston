@@ -3,9 +3,11 @@
 [![npm](https://img.shields.io/npm/v/testicle.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/testicle)
 
 # Testicle
-Similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation. Currently not TAP-compliant.
+Test runner similar to tape, but with ES6 module support, simpler subtest syntax and nice indentation. Currently not TAP-compliant.
 
 🍒
+
+(please suggest a [better name](https://github.com/pakastin/testicle/issues/3))
 
 ## Installation
 ```
