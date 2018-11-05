@@ -6,7 +6,7 @@
   "module": "src/index.mjs",
   "scripts": {
     "build": "rollup -c -n test -f cjs src/index.mjs -o dist/teston.js",
-    "test": "node --experimental-modules src/index.test.mjs"
+    "test": "node --experimental-modules test/index.test.mjs"
   },
   "author": "Juha Lindstedt",
   "license": "MIT",
