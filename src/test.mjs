@@ -5,6 +5,7 @@ import equal from './equal.mjs';
 import deepEqual from './deepequal.mjs';
 import pass from './pass.mjs';
 import fail from './fail.mjs';
+import ok, { notOk } from './ok.mjs';
 import { green, red, grey } from './colors.mjs';
 
 let depth = 1;
@@ -12,14 +13,14 @@ let depth = 1;
 const q = [];
 let qReady = true;
 
+const nextTick = (process && process.nextTick) || setTimeout;
+
 const serve = () => {
   if (qReady) {
     if (!q.length) {
       console.log('');
       if (passed) {
         console.log(green('♥︎ All tests passed ♥︎'));
-      } else {
-        console.error(red('Test failed'));
       }
       return;
     }
@@ -44,7 +45,13 @@ const t = (description, test) => {
       t.white = (str) => console.log(t.indent + str);
       t.grey = (str) => console.log(t.indent + grey(str));
       t.green = (str) => console.log(t.indent + green(str));
-      t.red = (str) => console.error(t.indent + red(str));
+      t.red = (str, exit) => {
+        console.error(t.indent + red(str));
+
+        if (exit) {
+          process && process.exit(1);
+        }
+      };
 
       console.log('');
       t.white(description);
@@ -55,12 +62,12 @@ const t = (description, test) => {
       t.planned = 0;
       t.plan = plan(t);
       t.checkReady = checkReady(t, (result, passed, failed, total) => {
-        process.nextTick(() => {
+        nextTick(() => {
           if (total) {
             if (result) {
               t.green(`» Passed ${passed}/${total}`);
             } else {
-              t.red(`» Failed ${failed}/${total}`);
+              t.red(`» Failed ${failed}/${total}`, true);
             }
           }
           if (timeout) {
@@ -71,15 +78,17 @@ const t = (description, test) => {
           depth--;
         });
       });
-      t.pass = pass(t, (description) => {
-        t.green(`✔︎ ${description || 'pass'}`);
+      t.pass = pass(t, (message) => {
+        t.green(`✔︎ ${message || 'pass'}`);
         t.checkReady();
       });
-      t.fail = fail(t, (description) => {
-        t.red(`✗ ${description || 'fail'}`);
+      t.fail = fail(t, (message) => {
+        t.red(`✗ ${message || 'fail'}`, true);
         t.checkReady();
         passed = false;
       });
+      t.ok = ok(t);
+      t.notOk = notOk(t);
       t.equal = t.equals = equal(t, (equals, a, b) => {
         if (!equals) {
           grey(a);
@@ -102,7 +111,7 @@ const t = (description, test) => {
           timeout = null;
 
           if (!t.ready) {
-            t.red(`» timeout`);
+            t.red(`» timeout`, true);
           }
         }, t.timeout);
       }
