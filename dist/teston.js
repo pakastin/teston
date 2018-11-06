@@ -47,17 +47,17 @@ function plan (t) {
   };
 }
 
-function equal (t, next) { return function (a, b, description) {
+function equal (t, next) { return function (a, b, message) {
   var pass = t.pass;
   var fail = t.fail;
   var result = a === b;
 
   if (result) {
-    pass(description || 'equal');
-    next(true);
+    pass(message || 'equal');
+    next && next(true);
   } else {
-    fail(description || 'equal');
-    next(false, a, b);
+    fail(message || 'equal');
+    next && next(false, a, b);
   }
 }; }
 
@@ -101,27 +101,41 @@ var deepEqual = function (a, b) {
   return true;
 };
 
-function deepEqual$1 (t, next) { return function (a, b, msg) {
+function deepEqual$1 (t, next) { return function (a, b, message) {
   if (deepEqual(a, b)) {
-    t.pass(msg || 'deep equal');
-    next(true);
+    t.pass(message || 'deep equal');
+    next && next(true);
   } else {
-    t.fail(msg || 'deep equal');
-    next(false, a, b);
+    t.fail(message || 'deep equal');
+    next && next(false, a, b);
   }
 }; }
 
-function pass (t, next) { return function (description) {
+function pass (t, next) { return function (message) {
   t.results.push(true);
 
-  next(description);
+  next && next(message);
 }; }
 
-function fail (t, next) { return function (description) {
+function fail (t, next) { return function (message) {
   t.results.push(false);
 
-  next(description);
+  next && next(message);
 }; }
+
+var ok = function (t, next) { return function (value, message) {
+  if (value) {
+    pass(t)(message);
+    next && next(true);
+  } else {
+    fail(t)(message);
+    next && next(false);
+  }
+}; };
+
+var notOk = function (t, next) { return function (value, message) {
+  return ok(t, next)(!value, message);
+}; };
 
 var GREEN = '\x1b[32m';
 var RESET = '\x1b[0m';
@@ -143,14 +157,14 @@ var depth = 1;
 var q = [];
 var qReady = true;
 
+var nextTick = (process && process.nextTick) || setTimeout;
+
 var serve = function () {
   if (qReady) {
     if (!q.length) {
       console.log('');
       if (passed) {
         console.log(green('♥︎ All tests passed ♥︎'));
-      } else {
-        console.error(red('Test failed'));
       }
       return;
     }
@@ -176,7 +190,13 @@ var t = function (description, test) {
       t.white = function (str) { return console.log(t.indent + str); };
       t.grey = function (str) { return console.log(t.indent + grey(str)); };
       t.green = function (str) { return console.log(t.indent + green(str)); };
-      t.red = function (str) { return console.error(t.indent + red(str)); };
+      t.red = function (str, exit) {
+        console.error(t.indent + red(str));
+
+        if (exit) {
+          process && process.exit(1);
+        }
+      };
 
       console.log('');
       t.white(description);
@@ -187,12 +207,12 @@ var t = function (description, test) {
       t.planned = 0;
       t.plan = plan(t);
       t.checkReady = checkReady(t, function (result, passed, failed, total) {
-        process.nextTick(function () {
+        nextTick(function () {
           if (total) {
             if (result) {
               t.green(("» Passed " + passed + "/" + total));
             } else {
-              t.red(("» Failed " + failed + "/" + total));
+              t.red(("» Failed " + failed + "/" + total), true);
             }
           }
           if (timeout) {
@@ -203,15 +223,17 @@ var t = function (description, test) {
           depth--;
         });
       });
-      t.pass = pass(t, function (description) {
-        t.green(("✔︎ " + (description || 'pass')));
+      t.pass = pass(t, function (message) {
+        t.green(("✔︎ " + (message || 'pass')));
         t.checkReady();
       });
-      t.fail = fail(t, function (description) {
-        t.red(("✗ " + (description || 'fail')));
+      t.fail = fail(t, function (message) {
+        t.red(("✗ " + (message || 'fail')), true);
         t.checkReady();
         passed = false;
       });
+      t.ok = ok(t);
+      t.notOk = notOk(t);
       t.equal = t.equals = equal(t, function (equals, a, b) {
       });
       t.deepEqual = t.deepEquals = deepEqual$1(t, function (equals, a, b) {
@@ -224,7 +246,7 @@ var t = function (description, test) {
           timeout = null;
 
           if (!t.ready) {
-            t.red("» timeout");
+            t.red("» timeout", true);
           }
         }, t.timeout);
       }
