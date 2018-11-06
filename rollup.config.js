@@ -6,9 +6,9 @@ export default {
   ],
   input: 'src/index.mjs',
   output: {
-    name: 'test',
+    name: 'teston',
     dir: './dist',
-    format: 'cjs',
+    format: 'umd',
     file: 'teston.js'
   }
 };
