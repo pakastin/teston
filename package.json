@@ -17,7 +17,7 @@
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pakastin/teston.git"
+    "url": "git+https://github.com/testonjs/teston.git"
   },
   "keywords": [
     "test",
@@ -27,7 +27,7 @@
     "javascript"
   ],
   "bugs": {
-    "url": "https://github.com/pakastin/teston/issues"
+    "url": "https://github.com/testonjs/teston/issues"
   },
-  "homepage": "https://github.com/pakastin/teston#readme"
+  "homepage": "https://github.com/testonjs/teston#readme"
 }
