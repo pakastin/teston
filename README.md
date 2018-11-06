@@ -65,45 +65,37 @@ node --experimental-modules test.mjs
 ## API
 
 ### t
+`t(description: String, test: Function)`
 
-> The main function for creating a test.
-> You may also call this function when inside a test, which is called a subtest.
-
-Signature: `t(description: !message, test: !function)`
+The main function for creating a test.
+You may also call this function when inside a test, which is called a subtest.
 
 ### t.plan
+`t.plan(count: Number)`
 
-> Define how many tests there will be.
-
-Signature: `t.plan(count: !number)`
+Define how many tests there will be.
 
 ### t.pass
+`t.pass(message: String)`
 
-> Pass the current test, passing a message which will be logged to the console.
-
-Signature: `t.pass(message: !string)`
+Pass the current test with an optional message which will be logged to the console.
 
 ### t.fail
+`t.fail(message: String)`
 
-> Fail the test, passing a message that will be logged to the console.
+Fail the test, passing a message that will be logged to the console.
 
-Signature: `t.fail(message: !string)`
+### t.equals
+_alias: t.equal_
+`t.equals(a: *, b: *, message: String)`
 
-### t.equals(a, b, message)
+Assert that `a` and `b` are equal.
 
-aka t.equal
+### t.deepEqual
+_alias: t.deepEquals_
+`t.deepEquals(a: *, b: *, message: String)`
 
-> Assert that `a` and `b` are equal.
-
-Signature: `t.equals(a: !any, b: any!, message: string)
-
-### t.deepEqual(a, b, message)
-
-aka t.deepEquals
-
-> Assert that `a` and `b` are deeply equal.
-
-Signature: `t.deepEquals(a: !any, b: !any, message: string)`
+Assert that `a` and `b` are deeply equal.
 
 ## License
 
