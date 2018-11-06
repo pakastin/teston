@@ -1,4 +1,5 @@
 .gitignore
 .travis.yml
 rollup.config.js
+img
 test
