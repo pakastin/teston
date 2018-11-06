@@ -1,12 +1,12 @@
-export default (t, next) => (a, b, description) => {
+export default (t, next) => (a, b, message) => {
   const { pass, fail } = t;
   const result = a === b;
 
   if (result) {
-    pass(description || 'equal');
-    next(true);
+    pass(message || 'equal');
+    next && next(true);
   } else {
-    fail(description || 'equal');
-    next(false, a, b);
+    fail(message || 'equal');
+    next && next(false, a, b);
   }
 };

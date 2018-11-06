@@ -1,5 +1,5 @@
-export default (t, next) => (description) => {
+export default (t, next) => (message) => {
   t.results.push(true);
 
-  next(description);
+  next && next(message);
 };

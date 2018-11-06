@@ -38,12 +38,12 @@ const deepEqual = (a, b) => {
   return true;
 };
 
-export default (t, next) => (a, b, msg) => {
+export default (t, next) => (a, b, message) => {
   if (deepEqual(a, b)) {
-    t.pass(msg || 'deep equal');
-    next(true);
+    t.pass(message || 'deep equal');
+    next && next(true);
   } else {
-    t.fail(msg || 'deep equal');
-    next(false, a, b);
+    t.fail(message || 'deep equal');
+    next && next(false, a, b);
   }
 };
