@@ -1,6 +1,6 @@
 {
   "name": "teston",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Similar to tape, but with mjs support (w.i.p)",
   "main": "dist/teston.js",
   "module": "src/index.mjs",
