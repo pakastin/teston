@@ -85,6 +85,16 @@ Pass the current test with an optional message which will be logged to the conso
 
 Fail the test, passing a message that will be logged to the console.
 
+### t.ok
+`t.ok(value : Boolean, message : String)`
+
+Pass if value is truthy, fail if not.
+
+### t.notOk
+`t.notOk(value : Boolean, message : String)`
+
+Pass if value is not truthy, fail if is.
+
 ### t.equals
 _alias: t.equal_
 `t.equals(a: *, b: *, message: String)`
