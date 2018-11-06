@@ -5,7 +5,7 @@
   "main": "dist/teston.js",
   "module": "src/index.mjs",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && rollup -c rollup.config.es.js",
     "preversion": "npm run build && npm test",
     "postversion": "git push --tags",
     "test": "node --experimental-modules test/index.mjs"
