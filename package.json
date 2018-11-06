@@ -6,6 +6,7 @@
   "module": "src/index.mjs",
   "scripts": {
     "build": "rollup -c",
+    "preversion": "npm run build && npm test",
     "test": "node --experimental-modules test/index.mjs"
   },
   "author": "Juha Lindstedt",
