@@ -4,67 +4,6 @@
   (global.teston = factory());
 }(this, (function () { 'use strict';
 
-  var NOT_PLANNED = 'Not planned';
-  var TOO_MANY_RESULTS = 'Too many results';
-
-  function checkReady (t, cb) { return function () {
-    var results = t.results;
-    var planned = t.planned;
-
-    var total = results.length;
-
-    if (total === planned) {
-      var passed = results.filter(function (result) { return result; }).length;
-
-      if (t.ready) {
-        return;
-      }
-
-      t.result = passed === total;
-
-      t.ready = true;
-      cb(t.result, passed, total - passed, total);
-    } else if (total > planned) {
-      t.result = false;
-
-      if (planned === 0) {
-        throw new Error(NOT_PLANNED);
-      } else {
-        throw new Error(TOO_MANY_RESULTS);
-      }
-    }
-  }; }
-
-  function padding (count) {
-    var result = '';
-
-    for (var i = 0; i < count; i++) {
-      result += ' ';
-    }
-
-    return result;
-  }
-
-  function plan (t) {
-    return function (planned) {
-      t.planned = planned;
-    };
-  }
-
-  function equal (t, next) { return function (a, b, message) {
-    var pass = t.pass;
-    var fail = t.fail;
-    var result = a === b;
-
-    if (result) {
-      pass(message || 'equal');
-      next && next(true);
-    } else {
-      fail(message || 'equal');
-      next && next(false, a, b);
-    }
-  }; }
-
   var deepEqual = function (a, b) {
     if (a === b) {
       return true;
@@ -105,46 +44,19 @@
     return true;
   };
 
-  function deepEqual$1 (t, next) { return function (a, b, message) {
-    if (deepEqual(a, b)) {
-      t.pass(message || 'deep equal');
-      next && next(true);
-    } else {
-      t.fail(message || 'deep equal');
-      next && next(false, a, b);
+  function indent (count) {
+    var result = '';
+
+    for (var i = 0; i < count; i++) {
+      result += ' ';
     }
-  }; }
 
-  function pass (t, next) { return function (message) {
-    t.results.push(true);
-
-    next && next(message);
-  }; }
-
-  function fail (t, next) { return function (message) {
-    t.results.push(false);
-
-    next && next(message);
-  }; }
-
-  var ok = function (t, next) { return function (value, message) {
-    if (value) {
-      pass(t)(message);
-      next && next(true);
-    } else {
-      fail(t)(message);
-      next && next(false);
-    }
-  }; };
-
-  var notOk = function (t, next) { return function (value, message) {
-    return ok(t, next)(!value, message);
-  }; };
+    return result;
+  }
 
   var GREEN = '\x1b[32m';
   var RESET = '\x1b[0m';
   var RED = '\x1b[31m';
-  var GREY = '\x1b[90m';
 
   var green = function (str) {
     return GREEN + str + RESET;
@@ -152,125 +64,202 @@
   var red = function (str) {
     return RED + str + RESET;
   };
-  var grey = function (str) {
-    return GREY + str + RESET;
-  };
 
-  var depth = 1;
+  var id = 0;
 
-  var q = [];
-  var qReady = true;
-
-  var nextTick = (process && process.nextTick) || setTimeout;
-
-  var serve = function () {
-    if (qReady) {
-      if (!q.length) {
-        console.log('');
-        if (passed) {
-          console.log(green('♥︎ All tests passed ♥︎'));
-        }
-        return;
-      }
-      var ref = q.shift();
-      var test = ref.test;
-
-      qReady = false;
-      test();
+  var nextTick = function (cb) {
+    if (process && process.nextTick) {
+      process.nextTick(cb);
+    } else {
+      setTimeout(cb, 0);
     }
   };
 
-  var passed = true;
+  var factory = function (parent, depth) {
+    if ( depth === void 0 ) depth = -1;
 
-  var t = function (description, test) {
-    var d = depth;
-    var queued = {
-      test: function () {
-        var timeout;
-        t.timeout = 5000;
-        t.description = description;
-        t.indent = padding(queued.depth);
+    var timeout;
 
-        t.white = function (str) { return console.log(t.indent + str); };
-        t.grey = function (str) { return console.log(t.indent + grey(str)); };
-        t.green = function (str) { return console.log(t.indent + green(str)); };
-        t.red = function (str, exit) {
-          console.error(t.indent + red(str));
+    var t = function (description, test) {
+      var child = factory(t, depth + 1);
+      child.description = description;
+      child.test = test;
 
-          if (exit) {
-            process && process.exit(1);
-          }
-        };
+      t.queue || (t.queue = []);
+      t.queue.push(child);
 
-        console.log('');
-        t.white(description);
-
-        t.ready = false;
-        t.result = false;
-        t.results = [];
-        t.planned = 0;
-        t.plan = plan(t);
-        t.checkReady = checkReady(t, function (result, passed, failed, total) {
-          nextTick(function () {
-            if (total) {
-              if (result) {
-                t.green(("» Passed " + passed + "/" + total));
-              } else {
-                t.red(("» Failed " + failed + "/" + total), true);
-              }
-            }
-            if (timeout) {
-              clearTimeout(timeout);
-            }
-            qReady = true;
-            serve();
-            depth--;
-          });
-        });
-        t.pass = pass(t, function (message) {
-          t.green(("✔︎ " + (message || 'pass')));
-          t.checkReady();
-        });
-        t.fail = fail(t, function (message) {
-          t.red(("✗ " + (message || 'fail')), true);
-          t.checkReady();
-          passed = false;
-        });
-        t.ok = ok(t);
-        t.notOk = notOk(t);
-        t.equal = t.equals = equal(t, function (equals, a, b) {
-        });
-        t.deepEqual = t.deepEquals = deepEqual$1(t, function (equals, a, b) {
-        });
-        depth++;
-        test(t);
-
-        if (t.planned && !t.ready) {
-          timeout = setTimeout(function () {
-            timeout = null;
-
-            if (!t.ready) {
-              t.red("» timeout", true);
-            }
-          }, t.timeout);
-        }
-
-        t.checkReady();
-      },
-      depth: d
+      nextTick(child.serve);
     };
 
-    for (var i = 0; i <= q.length; i++) {
-      if (i === q.length || depth > q[i].depth) {
-        q.splice(i, 0, queued);
+    t.id = id++;
+    t.parent = parent;
+
+    t.depth = depth;
+    t.introduced = false;
+    t.timeout = 5000;
+
+    t.plannedCount = 0;
+    t.passedCount = 0;
+    t.doneCount = 0;
+
+    t.plannedDescendantCount = 0;
+    t.passedDescendantCount = 0;
+
+    t.serve = function () {
+      var waitingChildren = t.plannedDescendantCount !== t.passedDescendantCount;
+      var queueing = t.queue && t.queue.length;
+
+      if (!waitingChildren) {
+        if (queueing) {
+          var child = t.queue.shift();
+
+          child.test(child);
+        } else if (t.plannedCount === t.passedCount) {
+          parent.serve && parent.serve();
+        }
+      }
+    };
+
+    t.plan = function (count) {
+      t.plannedCount += count;
+      parent.planned && parent.planned(t, count);
+
+      clearTimeout(timeout);
+      timeout = setTimeout(function () {
+        if (t.doneCount !== t.plannedCount) {
+          t.fail('Timeout');
+        }
+      }, t.timeout);
+    };
+
+    t.planned = function (t, count) {
+      t.plannedDescendantCount += count;
+      parent.planned && parent.planned(t, count);
+    };
+
+    t.pass = function (message) {
+      t.passedCount++;
+      t.doneCount++;
+      parent.passed && parent.passed(t, message || 'passed');
+
+      if (t.plannedCount === 0) {
+        t.fail('Always plan');
+      } else if (t.doneCount > t.plannedCount) {
+        t.fail('Passed/failed too many times');
+      }
+
+      if (t.doneCount === t.plannedCount) {
+        clearTimeout(timeout);
+      }
+
+      t.serve();
+    };
+
+    t.passed = function (t, message) {
+      t.passedDescendantCount++;
+      parent.passed && parent.passed(t, message);
+      t.serve();
+    };
+
+    t.fail = function (message) {
+      t.doneCount++;
+      parent.failed && parent.failed(t, message || 'failed');
+
+      if (t.doneCount === t.plannedCount) {
+        clearTimeout(timeout);
+      }
+    };
+
+    t.failed = function (t, message) {
+      parent.failed && parent.failed(t, message);
+    };
+
+    t.ok = function (value, message) {
+      if (value) {
+        t.pass(message || 'ok');
+      } else {
+        t.fail(message || 'ok');
+      }
+    };
+
+    t.notOk = function (value, message) {
+      t.ok(!value, message || 'not ok');
+    };
+
+    t.equal = t.equals = function (a, b, message) {
+      t.ok(a === b, message || 'equals');
+    };
+
+    t.deepEqual = function (a, b, message) {
+      if (deepEqual(a, b)) {
+        t.pass(message || 'deep equal');
+      } else {
+        t.fail(message || 'deep equal');
+      }
+    };
+
+    return t;
+  };
+
+  var introduceParents = function (t) {
+    var parents = [];
+    var traverse = t;
+
+    while (traverse) {
+      if (traverse.introduced) {
         break;
       }
+      parents.unshift(traverse);
+
+      traverse = traverse.parent;
     }
 
-    if (qReady) {
-      serve();
+    for (var i = 0; i < parents.length; i++) {
+      var parent = parents[i];
+
+      if (!parent.introduced) {
+        parent.introduced = true;
+        if (parent.description) {
+          console.log('');
+          console.log(indent(parent.depth), parent.description);
+        }
+      }
     }
   };
+
+  var planned = 0;
+  var passed = 0;
+
+  var t = factory({
+    ready: false,
+    planned: function planned$1 (t, count) {
+      planned += count;
+    },
+    passed: function passed$1 (t, message) {
+      passed++;
+      introduceParents(t);
+      console.log(indent(t.depth) + green(' ✔︎ ' + message));
+    },
+    failed: function failed (t, message) {
+      console.log(t);
+      console.error(indent(t.depth) + red('✗ ' + message));
+      process.exit(1);
+    },
+    serve: function serve () {
+      var this$1 = this;
+
+      nextTick(function () {
+        if (planned === passed) {
+          if (this$1.ready) {
+            return;
+          }
+          this$1.ready = true;
+          console.log('');
+          console.log(green('♥︎ All tests passed! ♥︎'));
+        }
+      });
+    }
+  });
 
   return t;
 
