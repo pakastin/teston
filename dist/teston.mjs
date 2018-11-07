@@ -38,27 +38,6 @@ var deepEqual = function (a, b) {
   return true;
 };
 
-function indent (count) {
-  var result = '';
-
-  for (var i = 0; i < count; i++) {
-    result += ' ';
-  }
-
-  return result;
-}
-
-var GREEN = '\x1b[32m';
-var RESET = '\x1b[0m';
-var RED = '\x1b[31m';
-
-var green = function (str) {
-  return GREEN + str + RESET;
-};
-var red = function (str) {
-  return RED + str + RESET;
-};
-
 var id = 0;
 
 var nextTick = function (cb) {
@@ -69,13 +48,13 @@ var nextTick = function (cb) {
   }
 };
 
-var factory = function (parent, depth) {
+var createTest = function (parent, depth) {
   if ( depth === void 0 ) depth = -1;
 
   var timeout;
 
   var t = function (description, test) {
-    var child = factory(t, depth + 1);
+    var child = createTest(t, depth + 1);
     child.description = description;
     child.test = test;
 
@@ -192,8 +171,34 @@ var factory = function (parent, depth) {
     }
   };
 
+  t.createTest = createTest;
+
   return t;
 };
+
+function indent (count) {
+  var result = '';
+
+  for (var i = 0; i < count; i++) {
+    result += ' ';
+  }
+
+  return result;
+}
+
+var GREEN = '\x1b[32m';
+var RESET = '\x1b[0m';
+var RED = '\x1b[31m';
+
+var green = function (str) {
+  return GREEN + str + RESET;
+};
+var red = function (str) {
+  return RED + str + RESET;
+};
+
+var planned = 0;
+var passed = 0;
 
 var introduceParents = function (t) {
   var parents = [];
@@ -221,10 +226,7 @@ var introduceParents = function (t) {
   }
 };
 
-var planned = 0;
-var passed = 0;
-
-var t = factory({
+var index = createTest({
   ready: false,
   planned: function planned$1 (t, count) {
     planned += count;
@@ -255,4 +257,4 @@ var t = factory({
   }
 });
 
-export default t;
+export default index;

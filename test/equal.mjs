@@ -1,8 +1,8 @@
-export default (t, factory) => {
+export default (t) => {
   t('Should equal', (t) => {
     t.plan(3);
 
-    const test = factory({
+    const test = t.createTest({
       passed (a, message) {
         t.pass(message);
       }
@@ -19,7 +19,7 @@ export default (t, factory) => {
   t('Should not equal', (t) => {
     t.plan(3);
 
-    const test = factory({
+    const test = t.createTest({
       failed (a, message) {
         t.pass(message);
       }

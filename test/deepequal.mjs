@@ -1,8 +1,8 @@
-export default (t, factory) => {
+export default (t) => {
   t('Should pass similar objects', (t) => {
     t.plan(1);
 
-    const test = factory({
+    const test = t.createTest({
       passed () {
         t.pass('deep equal');
       }
@@ -14,7 +14,7 @@ export default (t, factory) => {
   t('Should fail with non-similar objects', (t) => {
     t.plan(3);
 
-    const test = factory({
+    const test = t.createTest({
       failed () {
         t.pass('not deep equal');
       }

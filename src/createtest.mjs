@@ -1,11 +1,8 @@
 import deepEqual from './deepequal.mjs';
-import indent from './indentation.mjs';
-
-import { green, red } from './colors.mjs';
 
 let id = 0;
 
-const nextTick = (cb) => {
+export const nextTick = (cb) => {
   if (process && process.nextTick) {
     process.nextTick(cb);
   } else {
@@ -13,11 +10,11 @@ const nextTick = (cb) => {
   }
 };
 
-export const factory = (parent, depth = -1) => {
+const createTest = (parent, depth = -1) => {
   let timeout;
 
   const t = (description, test) => {
-    const child = factory(t, depth + 1);
+    const child = createTest(t, depth + 1);
     child.description = description;
     child.test = test;
 
@@ -134,63 +131,9 @@ export const factory = (parent, depth = -1) => {
     }
   };
 
+  t.createTest = createTest;
+
   return t;
 };
 
-const introduceParents = (t) => {
-  const parents = [];
-  let traverse = t;
-
-  while (traverse) {
-    if (traverse.introduced) {
-      break;
-    }
-    parents.unshift(traverse);
-
-    traverse = traverse.parent;
-  }
-
-  for (let i = 0; i < parents.length; i++) {
-    const parent = parents[i];
-
-    if (!parent.introduced) {
-      parent.introduced = true;
-      if (parent.description) {
-        console.log('');
-        console.log(indent(parent.depth), parent.description);
-      }
-    }
-  }
-};
-
-let planned = 0;
-let passed = 0;
-
-export default factory({
-  ready: false,
-  planned (t, count) {
-    planned += count;
-  },
-  passed (t, message) {
-    passed++;
-    introduceParents(t);
-    console.log(indent(t.depth) + green(' ✔︎ ' + message));
-  },
-  failed (t, message) {
-    console.log(t);
-    console.error(indent(t.depth) + red('✗ ' + message));
-    process.exit(1);
-  },
-  serve () {
-    nextTick(() => {
-      if (planned === passed) {
-        if (this.ready) {
-          return;
-        }
-        this.ready = true;
-        console.log('');
-        console.log(green('♥︎ All tests passed! ♥︎'));
-      }
-    });
-  }
-});
+export default createTest;

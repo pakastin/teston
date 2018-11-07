@@ -1,5 +1,4 @@
 import t from '../src/index.mjs';
-import { factory } from '../src/test.mjs';
 
 import deepEqual from './deepequal.mjs';
 import colors from './colors.mjs';
@@ -11,16 +10,16 @@ import equal from './equal.mjs';
 
 t('Test', (t) => {
   t('Colors', colors);
-  t('t.pass', (t) => pass(t, factory));
-  t('t.fail', (t) => fail(t, factory));
-  t('t.ok', (t) => ok(t, factory));
-  t('t.notOk', (t) => notOk(t, factory));
-  t('t.equal', (t) => equal(t, factory));
-  t('t.deepEqual', (t) => deepEqual(t, factory));
+  t('t.pass', (t) => pass(t));
+  t('t.fail', (t) => fail(t));
+  t('t.ok', (t) => ok(t));
+  t('t.notOk', (t) => notOk(t));
+  t('t.equal', (t) => equal(t));
+  t('t.deepEqual', (t) => deepEqual(t));
   t('Timeout', (t) => {
     t.plan(1);
 
-    const test = factory({
+    const test = t.createTest({
       failed () {
         t.pass('Timeout');
       }

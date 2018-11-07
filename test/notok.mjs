@@ -1,7 +1,7 @@
-export default (t, factory) => {
+export default (t) => {
   t.plan(3);
 
-  const test = factory({
+  const test = t.createTest({
     failed (a, message) {
       t.pass(message);
     }
