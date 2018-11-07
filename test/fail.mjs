@@ -1,16 +1,14 @@
-import fail from '../src/fail.mjs';
+export default (t, factory) => {
+  t.plan(1);
 
-export default (t) => {
-  t('Fail', (t) => {
+  const test = factory({
+    failed () {
+      t.pass('Failed');
+    }
+  });
+
+  test('Should fail', (t) => {
     t.plan(1);
-
-    const obj = {
-      planned: 1,
-      results: []
-    };
-
-    fail(obj, () => {
-      t.deepEqual(obj.results, [false], 'Fail');
-    })('a', 'b');
+    t.fail();
   });
 };

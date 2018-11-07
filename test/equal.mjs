@@ -1,34 +1,35 @@
-import equal from '../src/equal.mjs';
+export default (t, factory) => {
+  t('Should equal', (t) => {
+    t.plan(3);
 
-export default (t) => {
-  t('Equal', (t) => {
-    t.plan(1);
+    const test = factory({
+      passed (a, message) {
+        t.pass(message);
+      }
+    });
 
-    equal({
-      pass: () => { },
-      results: []
-    }, (passed) => {
-      t.equal(passed, true, 'Pass');
-    })('a', 'a');
+    test('Should pass', (t) => {
+      t.plan(3);
+      t.equal(true, true, 'true');
+      t.equal(1, 1, '1');
+      t.equal('ok', 'ok', '"ok"');
+    });
   });
-  t('Not equal', (t) => {
-    t.plan(1);
 
-    equal({
-      fail: () => { },
-      results: []
-    }, (passed) => {
-      t.equal(passed, false, 'Fail');
-    })('a', 'b');
-  });
-  t('Similar not equal objects', (t) => {
-    t.plan(1);
+  t('Should not equal', (t) => {
+    t.plan(3);
 
-    equal({
-      fail: () => { },
-      results: []
-    }, (passed) => {
-      t.equal(passed, false, 'Fail');
-    })({ a: 1 }, { a: 1 });
+    const test = factory({
+      failed (a, message) {
+        t.pass(message);
+      }
+    });
+
+    test('Should fail', (t) => {
+      t.plan(3);
+      t.equal(true, false, 'true !== false');
+      t.equal(1, 2, '1 !== 2');
+      t.equal('ok', 'not ok', '"ok" !== "not ok"');
+    });
   });
 };

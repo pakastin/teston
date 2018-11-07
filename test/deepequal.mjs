@@ -1,39 +1,29 @@
-import deepEqual from '../src/deepequal.mjs';
-
-export default (t) => {
+export default (t, factory) => {
   t('Should pass similar objects', (t) => {
     t.plan(1);
 
-    deepEqual({
-      pass: () => { },
-      results: []
-    }, (passed) => {
-      t.equal(passed, true, 'Equal');
-    })({ a: 1, b: 2 }, { a: 1, b: 2 });
+    const test = factory({
+      passed () {
+        t.pass('deep equal');
+      }
+    });
+    test.plan(1);
+    test.deepEqual({ a: 1, b: 2 }, { a: 1, b: 2 });
   });
 
   t('Should fail with non-similar objects', (t) => {
     t.plan(3);
 
-    deepEqual({
-      fail: () => { },
-      results: []
-    }, (passed) => {
-      t.equal(passed, false, 'Not equal');
-    })({ a: 1 }, { a: 1, b: 2 });
+    const test = factory({
+      failed () {
+        t.pass('not deep equal');
+      }
+    });
 
-    deepEqual({
-      fail: () => { },
-      results: []
-    }, (passed) => {
-      t.equal(passed, false, 'Not equal');
-    })({ a: 1, b: 2 }, { a: 1 });
+    test.plan(3);
 
-    deepEqual({
-      fail: () => { },
-      results: []
-    }, (passed) => {
-      t.equal(passed, false, 'Not equal');
-    })({ a: 2, b: 1 }, { a: 1, b: 2 });
+    test.deepEqual({ a: 1 }, { a: 1, b: 2 });
+    test.deepEqual({ a: 1, b: 2 }, { a: 1 });
+    test.deepEqual({ a: 2, b: 1 }, { a: 1, b: 2 });
   });
 };

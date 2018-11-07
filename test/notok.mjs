@@ -2,15 +2,15 @@ export default (t, factory) => {
   t.plan(3);
 
   const test = factory({
-    passed (a, message) {
+    failed (a, message) {
       t.pass(message);
     }
   });
 
-  test('Should pass', (t) => {
+  test('Should fail', (t) => {
     t.plan(3);
-    t.ok(true, 'true');
-    t.ok(1, '1');
-    t.ok('ok', '"ok"');
+    t.ok(false, 'false');
+    t.ok(0, '0');
+    t.ok('', '""');
   });
 };

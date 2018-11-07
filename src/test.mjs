@@ -1,136 +1,196 @@
-import checkReady from './checkready.mjs';
-import padding from './indentation.mjs';
-import plan from './plan.mjs';
-import equal from './equal.mjs';
 import deepEqual from './deepequal.mjs';
-import pass from './pass.mjs';
-import fail from './fail.mjs';
-import ok, { notOk } from './ok.mjs';
-import { green, red, grey } from './colors.mjs';
+import indent from './indentation.mjs';
 
-let depth = 1;
+import { green, red } from './colors.mjs';
 
-const q = [];
-let qReady = true;
+let id = 0;
 
-const nextTick = (process && process.nextTick) || setTimeout;
-
-const serve = () => {
-  if (qReady) {
-    if (!q.length) {
-      console.log('');
-      if (passed) {
-        console.log(green('♥︎ All tests passed ♥︎'));
-      }
-      return;
-    }
-    const { test } = q.shift();
-
-    qReady = false;
-    test();
+const nextTick = (cb) => {
+  if (process && process.nextTick) {
+    process.nextTick(cb);
+  } else {
+    setTimeout(cb, 0);
   }
 };
 
-let passed = true;
+export const factory = (parent, depth = -1) => {
+  let timeout;
 
-const t = (description, test) => {
-  const d = depth;
-  const queued = {
-    test: () => {
-      let timeout;
-      t.timeout = 5000;
-      t.description = description;
-      t.indent = padding(queued.depth);
+  const t = (description, test) => {
+    const child = factory(t, depth + 1);
+    child.description = description;
+    child.test = test;
 
-      t.white = (str) => console.log(t.indent + str);
-      t.grey = (str) => console.log(t.indent + grey(str));
-      t.green = (str) => console.log(t.indent + green(str));
-      t.red = (str, exit) => {
-        console.error(t.indent + red(str));
+    t.queue || (t.queue = []);
+    t.queue.push(child);
 
-        if (exit) {
-          process && process.exit(1);
-        }
-      };
-
-      console.log('');
-      t.white(description);
-
-      t.ready = false;
-      t.result = false;
-      t.results = [];
-      t.planned = 0;
-      t.plan = plan(t);
-      t.checkReady = checkReady(t, (result, passed, failed, total) => {
-        nextTick(() => {
-          if (total) {
-            if (result) {
-              t.green(`» Passed ${passed}/${total}`);
-            } else {
-              t.red(`» Failed ${failed}/${total}`, true);
-            }
-          }
-          if (timeout) {
-            clearTimeout(timeout);
-          }
-          qReady = true;
-          serve();
-          depth--;
-        });
-      });
-      t.pass = pass(t, (message) => {
-        t.green(`✔︎ ${message || 'pass'}`);
-        t.checkReady();
-      });
-      t.fail = fail(t, (message) => {
-        t.red(`✗ ${message || 'fail'}`, true);
-        t.checkReady();
-        passed = false;
-      });
-      t.ok = ok(t);
-      t.notOk = notOk(t);
-      t.equal = t.equals = equal(t, (equals, a, b) => {
-        if (!equals) {
-          grey(a);
-          grey('› should equal to:');
-          grey(b);
-        }
-      });
-      t.deepEqual = t.deepEquals = deepEqual(t, (equals, a, b) => {
-        if (!equals) {
-          grey(a);
-          grey('› should deep equal to:');
-          grey(b);
-        }
-      });
-      depth++;
-      test(t);
-
-      if (t.planned && !t.ready) {
-        timeout = setTimeout(() => {
-          timeout = null;
-
-          if (!t.ready) {
-            t.red(`» timeout`, true);
-          }
-        }, t.timeout);
-      }
-
-      t.checkReady();
-    },
-    depth: d
+    nextTick(child.serve);
   };
 
-  for (let i = 0; i <= q.length; i++) {
-    if (i === q.length || depth > q[i].depth) {
-      q.splice(i, 0, queued);
+  t.id = id++;
+  t.parent = parent;
+
+  t.depth = depth;
+  t.introduced = false;
+  t.timeout = 5000;
+
+  t.plannedCount = 0;
+  t.passedCount = 0;
+  t.doneCount = 0;
+
+  t.plannedDescendantCount = 0;
+  t.passedDescendantCount = 0;
+
+  t.serve = () => {
+    const waitingChildren = t.plannedDescendantCount !== t.passedDescendantCount;
+    const queueing = t.queue && t.queue.length;
+
+    if (!waitingChildren) {
+      if (queueing) {
+        const child = t.queue.shift();
+
+        child.test(child);
+      } else if (t.plannedCount === t.passedCount) {
+        parent.serve && parent.serve();
+      }
+    }
+  };
+
+  t.plan = (count) => {
+    t.plannedCount += count;
+    parent.planned && parent.planned(t, count);
+
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      if (t.doneCount !== t.plannedCount) {
+        t.fail('Timeout');
+      }
+    }, t.timeout);
+  };
+
+  t.planned = (t, count) => {
+    t.plannedDescendantCount += count;
+    parent.planned && parent.planned(t, count);
+  };
+
+  t.pass = (message) => {
+    t.passedCount++;
+    t.doneCount++;
+    parent.passed && parent.passed(t, message || 'passed');
+
+    if (t.plannedCount === 0) {
+      t.fail('Always plan');
+    } else if (t.doneCount > t.plannedCount) {
+      t.fail('Passed/failed too many times');
+    }
+
+    if (t.doneCount === t.plannedCount) {
+      clearTimeout(timeout);
+    }
+
+    t.serve();
+  };
+
+  t.passed = (t, message) => {
+    t.passedDescendantCount++;
+    parent.passed && parent.passed(t, message);
+    t.serve();
+  };
+
+  t.fail = (message) => {
+    t.doneCount++;
+    parent.failed && parent.failed(t, message || 'failed');
+
+    if (t.doneCount === t.plannedCount) {
+      clearTimeout(timeout);
+    }
+  };
+
+  t.failed = (t, message) => {
+    parent.failed && parent.failed(t, message);
+  };
+
+  t.ok = (value, message) => {
+    if (value) {
+      t.pass(message || 'ok');
+    } else {
+      t.fail(message || 'ok');
+    }
+  };
+
+  t.notOk = (value, message) => {
+    t.ok(!value, message || 'not ok');
+  };
+
+  t.equal = t.equals = (a, b, message) => {
+    t.ok(a === b, message || 'equals');
+  };
+
+  t.deepEqual = (a, b, message) => {
+    if (deepEqual(a, b)) {
+      t.pass(message || 'deep equal');
+    } else {
+      t.fail(message || 'deep equal');
+    }
+  };
+
+  return t;
+};
+
+const introduceParents = (t) => {
+  const parents = [];
+  let traverse = t;
+
+  while (traverse) {
+    if (traverse.introduced) {
       break;
     }
+    parents.unshift(traverse);
+
+    traverse = traverse.parent;
   }
 
-  if (qReady) {
-    serve();
+  for (let i = 0; i < parents.length; i++) {
+    const parent = parents[i];
+
+    if (!parent.introduced) {
+      parent.introduced = true;
+      if (parent.description) {
+        console.log('');
+        console.log(indent(parent.depth), parent.description);
+      }
+    }
   }
 };
 
-export default t;
+let planned = 0;
+let passed = 0;
+
+export default factory({
+  ready: false,
+  planned (t, count) {
+    planned += count;
+  },
+  passed (t, message) {
+    passed++;
+    introduceParents(t);
+    console.log(indent(t.depth) + green(' ✔︎ ' + message));
+  },
+  failed (t, message) {
+    console.log(t);
+    console.error(indent(t.depth) + red('✗ ' + message));
+    process.exit(1);
+  },
+  serve () {
+    nextTick(() => {
+      if (planned === passed) {
+        if (this.ready) {
+          return;
+        }
+        this.ready = true;
+        console.log('');
+        console.log(green('♥︎ All tests passed! ♥︎'));
+      }
+    });
+  }
+});

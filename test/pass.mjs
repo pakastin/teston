@@ -1,16 +1,14 @@
-import pass from '../src/pass.mjs';
+export default (t, factory) => {
+  t.plan(1);
 
-export default (t) => {
-  t('Pass', (t) => {
+  const test = factory({
+    passed () {
+      t.pass();
+    }
+  });
+
+  test('Should pass', (t) => {
     t.plan(1);
-
-    const obj = {
-      planned: 1,
-      results: []
-    };
-
-    pass(obj, () => {
-      t.deepEqual(obj.results, [true], 'Pass');
-    })('a', 'a');
+    t.pass();
   });
 };
