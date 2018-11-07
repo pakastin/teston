@@ -4,12 +4,12 @@ Test runner similar to tape, but with ES6 module support, simpler subtest syntax
 
 Oh, and Teston is blazing fast, of course! 🚀
 
-[![Build Status](https://img.shields.io/travis/pakastin/teston/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/pakastin/teston?branch=master)
+[![Build Status](https://img.shields.io/travis/testonjs/teston/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/testonjs/teston?branch=master)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Flet/semistandard)
 [![npm](https://img.shields.io/npm/v/teston.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/teston)
  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-[Example](https://travis-ci.org/pakastin/teston?branch=master) ([Source](https://github.com/testonjs/teston/tree/master/test))
+[Example](https://travis-ci.org/testonjs/teston?branch=master) ([Source](https://github.com/testonjs/teston/tree/master/test))
 
 ## Installation
 
@@ -22,7 +22,7 @@ npm i teston
 Or you can install the development version from `git`, providing it is installed.
 
 ```sh
-git clone https://github.com/pakastin/teston.git
+git clone https://github.com/testonjs/teston.git
 ```
 
 ## Usage
@@ -108,4 +108,4 @@ Assert that `a` and `b` are deeply equal.
 
 ## License
 
-[MIT](https://github.com/pakastin/teston/blob/master/LICENSE)
+[MIT](https://github.com/testonjs/teston/blob/master/LICENSE)
