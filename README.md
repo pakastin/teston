@@ -50,18 +50,15 @@ The output of the above code when passed to Teston would be:
 ```sh
 node --experimental-modules test.mjs
 
-
  Testing things
 
   Test A
   ✔︎ Works!
-  » Passed 1/1
 
   Test B
   ✔︎ Works!
-  » Passed 1/1
 
-♥︎ All tests passed ♥︎
+♥︎ All tests passed! ♥︎
 ```
 
 ## API
