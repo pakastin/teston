@@ -107,7 +107,7 @@ _alias: t.deepEquals_
 Assert that `a` and `b` are deeply equal.
 
 ## Test
-* [https://hakanols.github.io/teston/test/index.html](Runt tests in browser)
+* [Runt tests in browser](https://hakanols.github.io/teston/test/index.html)
 
 ## License
 
