@@ -47,7 +47,7 @@
   var id = 0;
 
   var nextTick = function (cb) {
-    if (process && process.nextTick) {
+    if (typeof process !== "undefined" && process && process.nextTick) {
       process.nextTick(cb);
     } else {
       setTimeout(cb, 0);
@@ -176,6 +176,17 @@
         t.fail(message || 'deep equal');
       }
     };
+    
+    t.throws = function (throwingFunction, errorType, message) {
+      if ( message === void 0 ) message = "Correct error type";
+
+      try {
+        throwingFunction();
+        t.fail("This shall never execute");
+      } catch (e) {
+        t.equal(e.name, errorType.name, message);
+      }
+    };
 
     t.createTest = createTest;
 
@@ -197,10 +208,10 @@
   var RED = '\x1b[31m';
 
   var green = function (str) {
-    return GREEN + str + RESET;
+    return (typeof window !== "undefined")? str : GREEN + str + RESET;
   };
   var red = function (str) {
-    return RED + str + RESET;
+    return (typeof window !== "undefined")? str : RED + str + RESET;
   };
 
   var planned = 0;
@@ -226,7 +237,7 @@
         parent.introduced = true;
         if (parent.description) {
           console.log('');
-          console.log(indent(parent.depth), parent.description);
+          console.log(indent(parent.depth) + parent.description);
         }
       }
     }
@@ -240,7 +251,7 @@
     passed: function passed$1 (t, message) {
       passed++;
       introduceParents(t);
-      console.log(indent(t.depth) + green(' ✔︎ ' + message));
+      console.log(indent(t.depth) + green('✔ ' + message));
     },
     failed: function failed (t, message) {
       console.log(t);
@@ -257,7 +268,7 @@
           }
           this$1.ready = true;
           console.log('');
-          console.log(green('♥︎ All tests passed! ♥︎'));
+          console.log(green('♥ All tests passed! ♥'));
         }
       });
     }

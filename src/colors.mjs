@@ -4,11 +4,11 @@ export const RED = '\x1b[31m';
 export const GREY = '\x1b[90m';
 
 export const green = (str) => {
-  return GREEN + str + RESET;
+  return (typeof window !== "undefined")? str : GREEN + str + RESET;
 };
 export const red = (str) => {
-  return RED + str + RESET;
+  return (typeof window !== "undefined")? str : RED + str + RESET;
 };
 export const grey = (str) => {
-  return GREY + str + RESET;
+  return (typeof window !== "undefined")? str : GREY + str + RESET;
 };

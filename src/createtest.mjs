@@ -3,7 +3,7 @@ import deepEqual from './deepequal.mjs';
 let id = 0;
 
 export const nextTick = (cb) => {
-  if (process && process.nextTick) {
+  if (typeof process !== "undefined" && process && process.nextTick) {
     process.nextTick(cb);
   } else {
     setTimeout(cb, 0);
@@ -128,6 +128,15 @@ const createTest = (parent, depth = -1) => {
       t.pass(message || 'deep equal');
     } else {
       t.fail(message || 'deep equal');
+    }
+  };
+  
+  t.throws = (throwingFunction, errorType, message = "Correct error type") => {
+    try {
+      throwingFunction();
+      t.fail("This shall never execute")
+    } catch (e) {
+      t.equal(e.name, errorType.name, message);
     }
   };
 
