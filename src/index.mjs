@@ -25,7 +25,7 @@ const introduceParents = (t) => {
       parent.introduced = true;
       if (parent.description) {
         console.log('');
-        console.log(indent(parent.depth), parent.description);
+        console.log(indent(parent.depth) + parent.description);
       }
     }
   }
@@ -39,7 +39,7 @@ export default createTest({
   passed (t, message) {
     passed++;
     introduceParents(t);
-    console.log(indent(t.depth) + green(' ✔︎ ' + message));
+    console.log(indent(t.depth) + green('✔ ' + message));
   },
   failed (t, message) {
     console.log(t);
@@ -54,7 +54,7 @@ export default createTest({
         }
         this.ready = true;
         console.log('');
-        console.log(green('♥︎ All tests passed! ♥︎'));
+        console.log(green('♥ All tests passed! ♥'));
       }
     });
   }

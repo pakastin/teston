@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Testing</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <script type="module">
+    import "./index.mjs";
+
+    let oldLogger = console.log;
+    let logger = document.getElementById('log');
+    let buffer = [];
+
+    function printToPage(message){
+      buffer = buffer.concat(message);
+      if (logger !== undefined){
+        for (let i = 0; i < buffer.length; i++){
+          if (typeof buffer[i] == 'object') {
+            logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(buffer[i], undefined, 2) : buffer[i]) + '<br/>';
+          } else {
+            logger.innerHTML += buffer[i] + '<br/>';
+          }
+        }
+        buffer = [];
+      }
+    }
+
+    (function () {
+      console.log = function (message) {
+        oldLogger(message);
+        printToPage(message)
+      }
+    })();
+  </script>
+</head>
+<body>
+<p>Testing</p>
+<p>No printout? <a href="https://www.thepolyglotdeveloper.com/2014/08/bypass-cors-errors-testing-apis-locally/">Perhaps problem with CORS?</a></p>
+<hr>
+<pre id='log'></pre>
+</body>
+</html>

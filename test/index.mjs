@@ -7,6 +7,7 @@ import fail from './fail.mjs';
 import ok from './ok.mjs';
 import notOk from './notok.mjs';
 import equal from './equal.mjs';
+import throws from './throws.mjs';
 
 t('Test', (t) => {
   t('Colors', colors);
@@ -16,6 +17,7 @@ t('Test', (t) => {
   t('t.notOk', (t) => notOk(t));
   t('t.equal', (t) => equal(t));
   t('t.deepEqual', (t) => deepEqual(t));
+  t('t.throws', (t) => throws(t));
   t('Timeout', (t) => {
     t.plan(1);
 

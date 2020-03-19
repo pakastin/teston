@@ -106,6 +106,9 @@ _alias: t.deepEquals_
 
 Assert that `a` and `b` are deeply equal.
 
+## Test
+* [Runt tests in browser](https://testonjs.github.io/teston/test/index.html)
+
 ## License
 
 [MIT](https://github.com/testonjs/teston/blob/master/LICENSE)
