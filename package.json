@@ -1,6 +1,6 @@
 {
   "name": "teston",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "Similar to tape, but vanilla JS and ES module support",
   "type": "module",
   "main": "dist/teston.js",
