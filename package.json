@@ -1,20 +1,20 @@
 {
   "name": "teston",
   "version": "0.8.0",
-  "description": "Similar to tape, but with mjs support (w.i.p)",
-  "main": "dist/teston.js",
-  "module": "src/index.mjs",
+  "description": "Similar to tape, but vanilla JS and ES module support",
+  "type": "module",
+  "main": "src/teston.js",
   "scripts": {
     "build": "rollup -c && rollup -c rollup.config.es.js",
     "preversion": "npm run build && npm test",
     "postversion": "git push --tags",
-    "test": "node --experimental-modules test/index.mjs"
+    "test": "node --experimental-modules test/index.js"
   },
   "author": "Juha Lindstedt",
   "license": "MIT",
   "devDependencies": {
     "esm": "^3.2.25",
-    "rollup": "~0.66.6",
+    "rollup": "~4.18.0",
     "rollup-plugin-buble": "~0.19.4"
   },
   "dependencies": {},
@@ -22,13 +22,7 @@
     "type": "git",
     "url": "git+https://github.com/testonjs/teston.git"
   },
-  "keywords": [
-    "test",
-    "runner",
-    "tape",
-    "tap",
-    "javascript"
-  ],
+  "keywords": ["test", "runner", "tape", "tap", "javascript"],
   "bugs": {
     "url": "https://github.com/testonjs/teston/issues"
   },

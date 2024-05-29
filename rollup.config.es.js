@@ -1,14 +1,11 @@
-import buble from 'rollup-plugin-buble';
+import buble from "rollup-plugin-buble";
 
 export default {
-  plugins: [
-    buble()
-  ],
-  input: 'src/index.mjs',
+  plugins: [buble()],
+  input: "src/index.js",
   output: {
-    name: 'teston',
-    dir: './dist',
-    format: 'esm',
-    file: 'teston.mjs'
-  }
+    name: "teston",
+    format: "esm",
+    file: "dist/teston.es.js",
+  },
 };

@@ -1,4 +1,4 @@
-import deepEqual from './deepequal.mjs';
+import deepEqual from "./deepequal.js";
 
 let id = 0;
 
@@ -39,7 +39,8 @@ const createTest = (parent, depth = -1) => {
   t.passedDescendantCount = 0;
 
   t.serve = () => {
-    const waitingChildren = t.plannedDescendantCount !== t.passedDescendantCount;
+    const waitingChildren =
+      t.plannedDescendantCount !== t.passedDescendantCount;
     const queueing = t.queue && t.queue.length;
 
     if (!waitingChildren) {
@@ -60,7 +61,7 @@ const createTest = (parent, depth = -1) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       if (t.doneCount !== t.plannedCount) {
-        t.fail('Timeout');
+        t.fail("Timeout");
       }
     }, t.timeout);
   };
@@ -73,12 +74,12 @@ const createTest = (parent, depth = -1) => {
   t.pass = (message) => {
     t.passedCount++;
     t.doneCount++;
-    parent.passed && parent.passed(t, message || 'passed');
+    parent.passed && parent.passed(t, message || "passed");
 
     if (t.plannedCount === 0) {
-      t.fail('Always plan');
+      t.fail("Always plan");
     } else if (t.doneCount > t.plannedCount) {
-      t.fail('Passed/failed too many times');
+      t.fail("Passed/failed too many times");
     }
 
     if (t.doneCount === t.plannedCount) {
@@ -96,7 +97,7 @@ const createTest = (parent, depth = -1) => {
 
   t.fail = (message) => {
     t.doneCount++;
-    parent.failed && parent.failed(t, message || 'failed');
+    parent.failed && parent.failed(t, message || "failed");
 
     if (t.doneCount === t.plannedCount) {
       clearTimeout(timeout);
@@ -109,32 +110,32 @@ const createTest = (parent, depth = -1) => {
 
   t.ok = (value, message) => {
     if (value) {
-      t.pass(message || 'ok');
+      t.pass(message || "ok");
     } else {
-      t.fail(message || 'ok');
+      t.fail(message || "ok");
     }
   };
 
   t.notOk = (value, message) => {
-    t.ok(!value, message || 'not ok');
+    t.ok(!value, message || "not ok");
   };
 
   t.equal = t.equals = (a, b, message) => {
-    t.ok(a === b, message || 'equals');
+    t.ok(a === b, message || "equals");
   };
 
   t.deepEqual = (a, b, message) => {
     if (deepEqual(a, b)) {
-      t.pass(message || 'deep equal');
+      t.pass(message || "deep equal");
     } else {
-      t.fail(message || 'deep equal');
+      t.fail(message || "deep equal");
     }
   };
-  
+
   t.throws = (throwingFunction, errorType, message = "Correct error type") => {
     try {
       throwingFunction();
-      t.fail("This shall never execute")
+      t.fail("This shall never execute");
     } catch (e) {
       t.equal(e.name, errorType.name, message);
     }

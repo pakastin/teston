@@ -79,7 +79,8 @@ var createTest = function (parent, depth) {
   t.passedDescendantCount = 0;
 
   t.serve = function () {
-    var waitingChildren = t.plannedDescendantCount !== t.passedDescendantCount;
+    var waitingChildren =
+      t.plannedDescendantCount !== t.passedDescendantCount;
     var queueing = t.queue && t.queue.length;
 
     if (!waitingChildren) {
@@ -100,7 +101,7 @@ var createTest = function (parent, depth) {
     clearTimeout(timeout);
     timeout = setTimeout(function () {
       if (t.doneCount !== t.plannedCount) {
-        t.fail('Timeout');
+        t.fail("Timeout");
       }
     }, t.timeout);
   };
@@ -113,12 +114,12 @@ var createTest = function (parent, depth) {
   t.pass = function (message) {
     t.passedCount++;
     t.doneCount++;
-    parent.passed && parent.passed(t, message || 'passed');
+    parent.passed && parent.passed(t, message || "passed");
 
     if (t.plannedCount === 0) {
-      t.fail('Always plan');
+      t.fail("Always plan");
     } else if (t.doneCount > t.plannedCount) {
-      t.fail('Passed/failed too many times');
+      t.fail("Passed/failed too many times");
     }
 
     if (t.doneCount === t.plannedCount) {
@@ -136,7 +137,7 @@ var createTest = function (parent, depth) {
 
   t.fail = function (message) {
     t.doneCount++;
-    parent.failed && parent.failed(t, message || 'failed');
+    parent.failed && parent.failed(t, message || "failed");
 
     if (t.doneCount === t.plannedCount) {
       clearTimeout(timeout);
@@ -149,28 +150,28 @@ var createTest = function (parent, depth) {
 
   t.ok = function (value, message) {
     if (value) {
-      t.pass(message || 'ok');
+      t.pass(message || "ok");
     } else {
-      t.fail(message || 'ok');
+      t.fail(message || "ok");
     }
   };
 
   t.notOk = function (value, message) {
-    t.ok(!value, message || 'not ok');
+    t.ok(!value, message || "not ok");
   };
 
   t.equal = t.equals = function (a, b, message) {
-    t.ok(a === b, message || 'equals');
+    t.ok(a === b, message || "equals");
   };
 
   t.deepEqual = function (a, b, message) {
     if (deepEqual(a, b)) {
-      t.pass(message || 'deep equal');
+      t.pass(message || "deep equal");
     } else {
-      t.fail(message || 'deep equal');
+      t.fail(message || "deep equal");
     }
   };
-  
+
   t.throws = function (throwingFunction, errorType, message) {
     if ( message === void 0 ) message = "Correct error type";
 
@@ -230,7 +231,7 @@ var introduceParents = function (t) {
     if (!parent.introduced) {
       parent.introduced = true;
       if (parent.description) {
-        console.log('');
+        console.log("");
         console.log(indent(parent.depth) + parent.description);
       }
     }
@@ -239,33 +240,33 @@ var introduceParents = function (t) {
 
 var index = createTest({
   ready: false,
-  planned: function planned$1 (t, count) {
+  planned: function planned$1(t, count) {
     planned += count;
   },
-  passed: function passed$1 (t, message) {
+  passed: function passed$1(t, message) {
     passed++;
     introduceParents(t);
-    console.log(indent(t.depth) + green('✔ ' + message));
+    console.log(indent(t.depth) + green("✔ " + message));
   },
-  failed: function failed (t, message) {
+  failed: function failed(t, message) {
     console.log(t);
-    console.error(indent(t.depth) + red('✗ ' + message));
+    console.error(indent(t.depth) + red("✗ " + message));
     process.exit(1);
   },
-  serve: function serve () {
-    var this$1 = this;
+  serve: function serve() {
+    var this$1$1 = this;
 
     nextTick(function () {
       if (planned === passed) {
-        if (this$1.ready) {
+        if (this$1$1.ready) {
           return;
         }
-        this$1.ready = true;
-        console.log('');
-        console.log(green('♥ All tests passed! ♥'));
+        this$1$1.ready = true;
+        console.log("");
+        console.log(green("♥ All tests passed! ♥"));
       }
     });
-  }
+  },
 });
 
-export default index;
+export { index as default };
