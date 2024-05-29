@@ -60,7 +60,7 @@ const createTest = (parent, depth = -1) => {
 
     clearTimeout(timeout);
     timeout = setTimeout(() => {
-      if (t.doneCount !== t.plannedCount) {
+      if (t.doneCount < t.plannedCount) {
         t.fail("Timeout");
       }
     }, t.timeout);
@@ -121,7 +121,12 @@ const createTest = (parent, depth = -1) => {
   };
 
   t.equal = t.equals = (a, b, message) => {
-    t.ok(a === b, message || "equals");
+    const pass = a === b;
+    let msg = `${message || "equals"}`;
+    if (!pass) {
+      msg += ` (${a} !== ${b})`;
+    }
+    t.ok(pass, msg);
   };
 
   t.deepEqual = (a, b, message) => {

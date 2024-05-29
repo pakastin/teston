@@ -42,7 +42,6 @@ export default createTest({
     console.log(indent(t.depth) + green("✓ " + message));
   },
   failed(t, message) {
-    console.log(t);
     console.error(indent(t.depth) + red("𐄂 " + message));
     process.exit(1);
   },
