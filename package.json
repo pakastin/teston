@@ -4,7 +4,7 @@
   "description": "Similar to tape, but vanilla JS and ES module support",
   "type": "module",
   "main": "dist/teston.js",
-  "exports": "src/index.js",
+  "exports": "./src/index.js",
   "scripts": {
     "build": "rollup -c && rollup -c rollup.config.es.js",
     "preversion": "npm run build && npm test",
@@ -23,13 +23,7 @@
     "type": "git",
     "url": "git+https://github.com/testonjs/teston.git"
   },
-  "keywords": [
-    "test",
-    "runner",
-    "tape",
-    "tap",
-    "javascript"
-  ],
+  "keywords": ["test", "runner", "tape", "tap", "javascript"],
   "bugs": {
     "url": "https://github.com/testonjs/teston/issues"
   },
