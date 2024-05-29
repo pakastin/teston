@@ -252,11 +252,11 @@
     passed: function passed$1(t, message) {
       passed++;
       introduceParents(t);
-      console.log(indent(t.depth) + green("✔ " + message));
+      console.log(indent(t.depth) + green("✓ " + message));
     },
     failed: function failed(t, message) {
       console.log(t);
-      console.error(indent(t.depth) + red("✗ " + message));
+      console.error(indent(t.depth) + red("𐄂 " + message));
       process.exit(1);
     },
     serve: function serve() {
@@ -269,7 +269,7 @@
           }
           this$1$1.ready = true;
           console.log("");
-          console.log(green("♥ All tests passed! ♥"));
+          console.log(green("✓ All tests passed!"));
         }
       });
     },
