@@ -22,13 +22,7 @@
     "type": "git",
     "url": "git+https://github.com/testonjs/teston.git"
   },
-  "keywords": [
-    "test",
-    "runner",
-    "tape",
-    "tap",
-    "javascript"
-  ],
+  "keywords": ["test", "runner", "tape", "tap", "javascript"],
   "bugs": {
     "url": "https://github.com/testonjs/teston/issues"
   },
