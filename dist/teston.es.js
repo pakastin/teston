@@ -100,7 +100,7 @@ var createTest = function (parent, depth) {
 
     clearTimeout(timeout);
     timeout = setTimeout(function () {
-      if (t.doneCount !== t.plannedCount) {
+      if (t.doneCount < t.plannedCount) {
         t.fail("Timeout");
       }
     }, t.timeout);
@@ -161,7 +161,12 @@ var createTest = function (parent, depth) {
   };
 
   t.equal = t.equals = function (a, b, message) {
-    t.ok(a === b, message || "equals");
+    var pass = a === b;
+    var msg = "" + (message || "equals");
+    if (!pass) {
+      msg += " (" + a + " !== " + b + ")";
+    }
+    t.ok(pass, msg);
   };
 
   t.deepEqual = function (a, b, message) {
@@ -249,7 +254,6 @@ var index = createTest({
     console.log(indent(t.depth) + green("✓ " + message));
   },
   failed: function failed(t, message) {
-    console.log(t);
     console.error(indent(t.depth) + red("𐄂 " + message));
     process.exit(1);
   },
