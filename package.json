@@ -1,6 +1,6 @@
 {
   "name": "teston",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "description": "Similar to tape, but vanilla JS and ES module support",
   "type": "module",
   "main": "dist/teston.js",
@@ -23,7 +23,13 @@
     "type": "git",
     "url": "git+https://github.com/testonjs/teston.git"
   },
-  "keywords": ["test", "runner", "tape", "tap", "javascript"],
+  "keywords": [
+    "test",
+    "runner",
+    "tape",
+    "tap",
+    "javascript"
+  ],
   "bugs": {
     "url": "https://github.com/testonjs/teston/issues"
   },
