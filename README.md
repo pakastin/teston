@@ -7,8 +7,6 @@ Oh, and Teston is blazing fast, of course! 🚀
 [![npm](https://img.shields.io/npm/v/teston.svg?maxAge=60&style=flat-square)](https://www.npmjs.com/package/teston)
  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-[Example](https://travis-ci.org/testonjs/teston?branch=master) ([Source](https://github.com/testonjs/teston/tree/master/test))
-
 ## Installation
 
 You can install the production version via `npm`.
